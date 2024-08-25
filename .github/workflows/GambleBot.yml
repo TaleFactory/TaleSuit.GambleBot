@@ -37,10 +37,7 @@ jobs:
           dry_run: true
           
       - name: Source
-        run: |
-          dotnet nuget add source --username roxeez --password ${{ secrets.NUGET_PACKAGES }} \
-          --store-password-in-clear-text \
-          --name talefactory "https://nuget.pkg.github.com/talefactory/index.json"
+        run: dotnet nuget add source --username roxeez --password ${{ secrets.NUGET_PACKAGES }} --store-password-in-clear-text --name talefactory "https://nuget.pkg.github.com/talefactory/index.json"
 
       - name: .NET Restore
         run: dotnet restore TaleSuit.GambleBot
