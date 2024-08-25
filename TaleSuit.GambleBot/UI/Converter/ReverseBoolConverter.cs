@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace TrainerBot.Converter;
+namespace TaleSuit.GambleBot.UI.Converter;
 
 public class ReverseBoolConverter : IValueConverter
 {

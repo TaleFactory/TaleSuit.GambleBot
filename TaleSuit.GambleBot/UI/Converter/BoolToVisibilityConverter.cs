@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace TrainerBot.Converter;
+namespace TaleSuit.GambleBot.UI.Converter;
 
 public class BoolToVisibilityConverter : IValueConverter
 {

@@ -1,0 +1,65 @@
+﻿<controls:AdonisWindow x:Class="TaleSuit.GambleBot.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:converter="clr-namespace:TaleSuit.GambleBot.UI.Converter"
+        xmlns:context="clr-namespace:TaleSuit.GambleBot.Context"
+        xmlns:wpf="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+        mc:Ignorable="d"
+        Title="GambleBot" Height="450" Width="250"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance context:MainWindowContext}">
+    <Window.Resources>
+        <converter:BoolToVisibilityConverter x:Key="TrueVisibleConverter" True="Visible" False="Collapsed"/>
+        <converter:BoolToVisibilityConverter x:Key="FalseVisibleConverter" True="Collapsed" False="Visible"/>
+        <converter:NullBooleanConverter x:Key="NullTrueConverter" NotNull="False" Null="True"/>
+        <converter:NullBooleanConverter x:Key="NullFalseConverter" NotNull="True" Null="False"/>
+        <converter:ReverseBoolConverter x:Key="ReverseBoolConverter"></converter:ReverseBoolConverter>
+    </Window.Resources>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadedCommand}"></b:InvokeCommandAction>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Header="Character" IsEnabled="{Binding Session, Converter={StaticResource NullTrueConverter}}">
+            <StackPanel>
+                <ComboBox ItemsSource="{Binding Characters}" SelectedItem="{Binding SelectedCharacter}"></ComboBox>
+                <Button Margin="0 5 0 0" Content="OK" Command="{Binding SelectCharacterCommand}"></Button>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Item" Margin="0 10 0 0" IsEnabled="{Binding Gambling, Converter={StaticResource ReverseBoolConverter}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ComboBox DisplayMemberPath="Name" ItemsSource="{Binding Items}" IsEnabled="{Binding Session, Converter={StaticResource NullFalseConverter}}" SelectedItem="{Binding SelectedItem}"></ComboBox>
+                <Button Command="{Binding RefreshItemsCommand}" Grid.Column="1" Margin="10 0 0 0" IsEnabled="{Binding Session, Converter={StaticResource NullFalseConverter}}">
+                    <wpf:MaterialIcon Kind="Refresh" Height="15" Width="15">
+                    
+                    </wpf:MaterialIcon>
+                </Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Logs" Margin="0 10 0 0">
+             <TextBox IsReadOnly="True" IsReadOnlyCaretVisible="False" VerticalContentAlignment="Top" Text="{Binding Logs}"></TextBox>
+        </GroupBox>
+        <Button Grid.Row="3" Margin="0 10 0 0" Command="{Binding GambleCommand}" IsEnabled="{Binding SelectedItem, Converter={StaticResource NullFalseConverter}}">
+            <Grid>
+                <TextBlock Visibility="{Binding Gambling, Converter={StaticResource FalseVisibleConverter}}" TextAlignment="Center" Text="GAMBLE"></TextBlock>
+                <TextBlock Visibility="{Binding Gambling, Converter={StaticResource TrueVisibleConverter}}" TextAlignment="Center" Text="STOP"></TextBlock>                 
+            </Grid>
+        </Button>
+    </Grid>
+</controls:AdonisWindow>

@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaleSuit.GambleBot", "TaleSuit.GambleBot\TaleSuit.GambleBot.csproj", "{BDA60B51-EE5F-4DE3-92DE-B922456C6FA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDA60B51-EE5F-4DE3-92DE-B922456C6FA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA60B51-EE5F-4DE3-92DE-B922456C6FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA60B51-EE5F-4DE3-92DE-B922456C6FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA60B51-EE5F-4DE3-92DE-B922456C6FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
