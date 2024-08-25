@@ -1,0 +1,60 @@
+name: GambleBot
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - 'README.md'
+      - '.gitignore'
+      - '.editorconfig'
+  workflow_dispatch:
+
+env:
+  dotnet: 8.0.x
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 10
+
+      - name: Configure .NET SDK ${{ env.dotnet }}
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.dotnet }}
+
+      - name: Generating version
+        id: versioning
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          release_branches: main
+          tag_prefix: ''
+          dry_run: true
+
+      - name: .NET Restore
+        run: dotnet restore TaleSuit.GambleBot
+
+      - name: .NET Build
+        run: dotnet build TaleSuit.GambleBot --no-restore -c Release -o build /p:Version=${{ steps.versioning.outputs.new_tag }} /p:DebugType=None /p:DebugSymbols=false
+      
+      - name: Cloudflare R2 Upload         
+        uses: okkema/github-action-r2@v0.1.1
+        with:
+          account_id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2_access_key: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2_secret_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2_bucket: gamblebot-builds
+          source_dir: build
+          destination_dir: ${{ steps.versioning.outputs.new_tag }}
+
+      - name: Create tag
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ''
+          custom_tag: ${{ steps.versioning.outputs.new_tag }}
