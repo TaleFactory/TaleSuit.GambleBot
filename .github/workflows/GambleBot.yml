@@ -35,6 +35,12 @@ jobs:
           release_branches: main
           tag_prefix: ''
           dry_run: true
+          
+      - name: Source
+        run: |
+          dotnet nuget add source --username roxeez --password ${{ secrets.NUGET_PACKAGES }} \
+            --store-password-in-clear-text \
+            --name talefactory "https://nuget.pkg.github.com/talefactory/index.json"
 
       - name: .NET Restore
         run: dotnet restore TaleSuit.GambleBot
@@ -46,8 +52,8 @@ jobs:
         uses: okkema/github-action-r2@v0.1.1
         with:
           account_id: ${{ secrets.R2_ACCOUNT_ID }}
-          r2_access_key: ${{ secrets.R2_ACCESS_KEY_ID }}
-          r2_secret_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2_access_key: ${{ secrets.R2_ACCESS_KEY }}
+          r2_secret_key: ${{ secrets.R2_SECRET_KEY }}
           r2_bucket: gamblebot-builds
           source_dir: build
           destination_dir: ${{ steps.versioning.outputs.new_tag }}
